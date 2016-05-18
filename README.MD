@@ -1,6 +1,8 @@
 # OpenSCAP Daemon API
 > Python API on top of the OpenSCAP Daemon
+
 > Inspired by oscapd-cli
+
 > For who don't want to use foreman in order to manage Oscap Daemon via webUI
 
 ## Project Description
@@ -42,27 +44,31 @@ interacts with the daemon using dbus.
 ## Examples:
 
 Get all tasks: 
-    curl -i http://127.0.0.1:5000/tasks -X GET
+```
+curl -i http://127.0.0.1:5000/tasks -X GET
+```
 
 Create a new task:
-    newtask.json 
-    {
+```
+newtask.json 
+{
     "taskTitle":"New Task test",
-     "taskTarget":"localhost",
-     "taskSSG":"/usr/share/xml/scap/ssg/content/ssg-jre-ds.xml",
-     "taskTailoring":"",
-     "taskProfileId":"xccdf_org.ssgproject.content_profile_stig-java-upstream",
-     "taskOnlineRemediation":"1",
-     "taskScheduleNotBefore":"",
-     "taskScheduleRepeatAfter":""
-     }
-    
-    curl -i http://127.0.0.1:5000/tasks -X POST -H "Content-Type: application/json" -d '@newtask.json'
-
+    "taskTarget":"localhost",
+    "taskSSG":"/usr/share/xml/scap/ssg/content/ssg-jre-ds.xml",
+    "taskTailoring":"",
+    "taskProfileId":"xccdf_org.ssgproject.content_profile_stig-java-upstream",
+    "taskOnlineRemediation":"1",
+    "taskScheduleNotBefore":"",
+    "taskScheduleRepeatAfter":""
+}
+  
+curl -i http://127.0.0.1:5000/tasks -X POST -H "Content-Type: application/json" -d '@newtask.json'
+```
 
 Update an existing task:   
-    updatetask.json
-    {
+```
+updatetask.json
+{
     "taskTitle":"New Task test modified",
     "taskTarget":"localhost",
     "taskSSG":"",
@@ -71,46 +77,62 @@ Update an existing task:
     "taskOnlineRemediation":"yes",
     "taskScheduleNotBefore":"",
     "taskScheduleRepeatAfter":""
-    }
+}
     
-    curl -i http://127.0.0.1:5000/tasks/1 -X PUT -H "Content-Type: application/json" -d '@updatetask.json'
-
+curl -i http://127.0.0.1:5000/tasks/1 -X PUT -H "Content-Type: application/json" -d '@updatetask.json'
+```
 
 Get info from existing task:
-    curl -i http://127.0.0.1:5000/tasks/1 -X GET
-    
+```
+curl -i http://127.0.0.1:5000/tasks/1 -X GET
+``` 
 
 Get guide info from existing task:
-    curl -i http://127.0.0.1:5000/tasks/1/guide -X GET
+```
+curl -i http://127.0.0.1:5000/tasks/1/guide -X GET
+```
 
 Get result from existing task:
-    curl -i http://127.0.0.1:5000/tasks/1/result/1 -X GET
+```
+curl -i http://127.0.0.1:5000/tasks/1/result/1 -X GET
+```
 
 Delete all results from existing task:
-    curl -i http://127.0.0.1:5000/tasks/1/result -X DELETE
+```
+curl -i http://127.0.0.1:5000/tasks/1/result -X DELETE
+```
 
 Delete result from existing task:
-    curl -i http://127.0.0.1:5000/tasks/1/result/1 -X DELETE
+```
+curl -i http://127.0.0.1:5000/tasks/1/result/1 -X DELETE
+```
 
 Launch existing task:
-    curl -i http://127.0.0.1:5000/tasks/1/run -X GET
+```
+curl -i http://127.0.0.1:5000/tasks/1/run -X GET
+```
 
 Enable/Disable existig task:
-    curl -i http://127.0.0.1:5000/tasks/1/enable -X PUT
-    curl -i http://127.0.0.1:5000/tasks/1/disable -X PUT
+```
+curl -i http://127.0.0.1:5000/tasks/1/enable -X PUT
+curl -i http://127.0.0.1:5000/tasks/1/disable -X PUT
+```
 
 Get all SSGs installed on the system:
-    curl -i http://127.0.0.1:5000/ssgs -X GET
+```
+curl -i http://127.0.0.1:5000/ssgs -X GET
+```
 
 Get SSG's profiles within json's request:
-    ssg.json
-    {
+```
+ssg.json
+{
     "ssgFile": "/usr/share/xml/scap/ssg/content/ssg-centos7-ds.xml",
     "tailoringFile": ""
-     }
-     
-     curl -i http://127.0.0.1:5000/ssgs -X POST -H "Content-Type: application/json" -d '@ssg.json'
-
+}
+    
+curl -i http://127.0.0.1:5000/ssgs -X POST -H "Content-Type: application/json" -d '@ssg.json'
+```
 
 ## Some references:
 * https://github.com/OpenSCAP/openscap-daemon/blob/master/bin/oscapd-cli
