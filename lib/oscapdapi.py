@@ -12,6 +12,7 @@ class OScapDaemonApi:
         self.dbusIface = self.connect()
         
     def connect(self):     
+        """Connects to dbus and returns an object to interact with the dbus interface"""
         varName = "OSCAPD_SESSION_BUS"
         obj = None
         if varName in os.environ and os.environ[varName] == "1":
@@ -29,6 +30,7 @@ class OScapDaemonApi:
         return dbus.Interface(obj, DBUS_INTERFACE)
 
     def get_ssg(self, ssgFile, tailoringFile):
+        """Returns a list of SSG with its profiles"""
         if ssgFile == "system":
             ssgChoices = self.dbusIface.GetSSGChoices()
         else:
@@ -52,6 +54,7 @@ class OScapDaemonApi:
         return ssgsJson
 
     def get_task(self, task):
+        """Returns a list of task registered on OpenSCAP Daemon"""
         if task == "all":
             tasksIds = self.dbusIface.ListTaskIDs()
         else:
@@ -88,6 +91,7 @@ class OScapDaemonApi:
         return tasksJson
 
     def get_task_guide(self, task):
+        """Returns the task Guide information in html format"""
         guideHtml = ""
         try:
             guideHtml = self.dbusIface.GenerateGuideForTask(task)
@@ -96,6 +100,7 @@ class OScapDaemonApi:
         return guideHtml
 
     def get_task_result(self, task, result):
+        """Returns the task Result information in html format"""
         resultHtml = ""
         try:
             resultHtml = self.dbusIface.GenerateReportForTaskResult(task, result)
@@ -104,6 +109,7 @@ class OScapDaemonApi:
         return resultHtml
 
     def remove_task_result(self, task, result):
+        """Removes task results from tasks"""
         tasksIds = [task]
         taskResultsIds = [result]
         remove = []
@@ -123,6 +129,7 @@ class OScapDaemonApi:
         return removeJson
 
     def run_task_outside_schedule(self, task):
+        """Forces the launch of tasks"""
         tasksIds = [task]
         run = []
         for taskId in tasksIds:    
@@ -142,6 +149,7 @@ class OScapDaemonApi:
         return runJson
 
     def remove_task(self, task):
+        """Removes tasks from OpenSCAP Daemon"""
         tasksIds = [task]
         delete = []
         for taskId in tasksIds:
@@ -158,6 +166,7 @@ class OScapDaemonApi:
         return deleteJson
 
     def task_schedule(self, task, status):
+        """Updates the task schedule"""
         tasksIds = [task]
         schedule = []
         for taskId in tasksIds:
@@ -175,6 +184,7 @@ class OScapDaemonApi:
         return scheduleJson
 
     def new_task(self, taskTitle, taskTarget, taskSSG, taskTailoring, taskProfileId, taskOnlineRemediation, taskScheduleNotBefore, taskScheduleRepeatAfter):
+        """Creates a new task on OpenSCAP Daemon"""
         # Setup defaults / normalize input
         if taskTarget == "":
             taskTarget = "localhost"
@@ -218,6 +228,7 @@ class OScapDaemonApi:
         return createJson
 
     def update_task(self, taskId, taskTitle, taskTarget, taskSSG, taskTailoring, taskProfileId, taskOnlineRemediation, taskScheduleNotBefore, taskScheduleRepeatAfter):
+        """Updates an existing task on OpenSCAP Daemon"""
         task = []
         try:
             enabled = self.dbusIface.GetTaskEnabled(taskId)          
