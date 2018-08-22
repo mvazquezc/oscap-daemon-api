@@ -133,6 +133,11 @@ ssg.json
     
 curl -i http://127.0.0.1:5000/ssgs -X POST -H "Content-Type: application/json" -d '@ssg.json'
 ```
+### Install
+1. Install python, dbus-python, pip, pipenv
+2. pipenv --site-packages
+3. pipenv install
+4. pipenv run python api.py
 
 ## Some references:
 * https://github.com/OpenSCAP/openscap-daemon/blob/master/bin/oscapd-cli
