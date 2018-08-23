@@ -1,7 +1,15 @@
 #!/usr/bin/python
+try:
+    import ConfigParser as configparser
+except ImportError:
+    # ConfigParser has been renamed to configparser in python3
+    import configparser
 
+import os
+import os.path
 from flask import Flask, jsonify, request
 from lib.oscapdapi import OScapDaemonApi
+from flask_basicauth import BasicAuth
 
 app = Flask(__name__)
 
@@ -103,6 +111,17 @@ def getSSG():
 
 if __name__ == "__main__":
     oscapd = OScapDaemonApi()
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    c_debug = config.getboolean('Api','debug')
+    c_host = config.get('Api','host')
+    c_port = config.get('Api','port')
+    c_auth = config.getboolean('Api','auth')
+    if c_auth:
+      basic_auth = BasicAuth(app)
+      app.config['BASIC_AUTH_USERNAME'] = config.get('Api','username')
+      app.config['BASIC_AUTH_PASSWORD'] = config.get('Api','password')
+      app.config['BASIC_AUTH_FORCE'] = True
     # Uncomment when testing
-    #app.debug = True
-    app.run()
+    app.debug = c_debug
+    app.run(host=c_host, port=c_port)
